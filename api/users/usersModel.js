@@ -9,8 +9,18 @@ const findAll = async () =>{
          )
     return data
 }
-const findByFilter = async () => {
-
+const findByUsername = async (username) => {
+    console.log(username)
+    const data = await db ('users as u')
+        .where('u.username', username)
+        .select(
+            "u.user_id",
+            "u.username",
+            "u.password",
+            "u.phoneNumber"
+        )
+        .first()
+    return data
 }
 const findByID = async (id) =>{
     const data = await db('users as u')
@@ -48,7 +58,7 @@ const removeResource = async  (id) => {
 
 module.exports = {
     findAll,
-    findByFilter,
+    findByUsername,
     findByID,
     addResource,
     removeResource

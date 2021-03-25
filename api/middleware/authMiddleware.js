@@ -22,22 +22,44 @@ const checkLoginContents = () => async(req, res, next) =>{
     if(!password){
         return res.status(404).json({message:"Please provide a password"})
     }
-    req.password = password;
+    
     next();
 }
 
+const checkLoginType = () => async(req, res, next) =>{
+    const { username , password } = req.body
+    if(typeof username != 'string'){
+        return res.status(400).json({message: "username is not a string"})
+    }
+    if(typeof password != 'string'){
+        return res.status(400).json({message:"password is not a string"})
+    }
+
+    console.log(typeof password)
+    console.log(typeof username)
+    
+    next();
+}
 const queryUsername = () => async(req,res,next)=> {
     const {username} = req.body
-    const verification = await model.findByFilter({username})
-    //if username exists:
-    if(verification){
-       return res.status(418).json({message:"Username is already taken"})
+    const verification = await model.findByUsername(username)
+
+    // console.log('username', username)
+    // console.log('verification', verification)
+    // console.log('typeof', typeof verification)
+
+    if(!verification){
+        console.log("broke")
+        return res.status(418).json({message:"user does not exist"})
     }
-    
+    req.password = verification.password;
     next()
+
+    
 }
 
 module.exports = {
+    checkLoginType,
     checkRegisterContents,
     checkLoginContents,
     queryUsername
