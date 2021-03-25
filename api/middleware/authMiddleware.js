@@ -14,7 +14,18 @@ const checkRegisterContents = () => async(req, res, next) =>{
     next();
 }
 
-const checkLoginContents = () => async(req, res, next) =>{
+const queryUsernameRegister = () => async ( req , res, next )=>{
+    const verification = await model.findByUsername(req.body.username)
+    if(verification){
+        console.log("broke")
+        return res.status(418).json({
+            message:"Username taken: Unique value needed."
+            })
+    }
+    next()
+}
+
+const checkContents = () => async(req, res, next) =>{
     const { username , password } = req.body
     if(!username){
         return res.status(404).json({message:"Please provide a username"})
@@ -26,21 +37,22 @@ const checkLoginContents = () => async(req, res, next) =>{
     next();
 }
 
-const checkLoginType = () => async(req, res, next) =>{
+const checkTypeOf = () => async(req, res, next) =>{
     const { username , password } = req.body
+    if(req.body.phoneNumber){
+        if(typeof req.body.phoneNumber != 'string'){
+            return res.status(400).json({message: "username is not a string"})
+        }
+    }
     if(typeof username != 'string'){
         return res.status(400).json({message: "username is not a string"})
     }
     if(typeof password != 'string'){
         return res.status(400).json({message:"password is not a string"})
-    }
-
-    console.log(typeof password)
-    console.log(typeof username)
-    
+    }   
     next();
 }
-const queryUsername = () => async(req,res,next)=> {
+const queryUsernameLogin = () => async(req,res,next)=> {
     const {username} = req.body
     const verification = await model.findByUsername(username)
 
@@ -54,13 +66,12 @@ const queryUsername = () => async(req,res,next)=> {
     }
     req.password = verification.password;
     next()
-
-    
 }
 
 module.exports = {
-    checkLoginType,
     checkRegisterContents,
-    checkLoginContents,
-    queryUsername
+    queryUsernameRegister,
+    checkContents,
+    checkTypeOf,
+    queryUsernameLogin,
 }

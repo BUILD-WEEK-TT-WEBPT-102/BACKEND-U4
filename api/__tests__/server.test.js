@@ -79,15 +79,59 @@ describe('auth endpoint', ()=>{
     expect(res.body.phoneNumber).toBe('8008675309')
     expect(res.body.user_id).toBeDefined()
   })
-  it('login passes', async()=>{
+  it('registration fails with bad username', async()=>{
+    const res = await supertest(server)
+      .post('/api/auth/register')
+      .send({
+        username:123456,
+        password: "abc123",
+        phoneNumber: "7026817945"
+      })
+      expect(res.status).toBe(400)
+  })
+  it('registration fails with bad password', async()=>{
+    const res = await supertest(server)
+      .post('/api/auth/register')
+      .send({
+        username:"workingName",
+        password: 123456,
+        phoneNumber: "workingNumber"
+      })
+      expect(res.status).toBe(400)
+  })
+  it('registration fails with bad phoneNumber', async()=>{
+    const res = await supertest(server)
+      .post('/api/auth/register')
+      .send({
+        username:"workingName",
+        password: "workingPassword",
+        phoneNumber:123456,
+      })
+      expect(res.status).toBe(400)
+  })
+  it('login passes with fresh user', async()=>{
+    const newGuy = await supertest(server)
+      .post('/api/auth/register')
+      .send({
+        username: "sirTinkles",
+        password: "abc123",
+        phoneNumber: "8008675309"
+      })
+    expect(newGuy.statusCode).toBe(201)
+    expect(newGuy.type).toBe('application/json')
+    expect(newGuy.body.username).toBe('sirTinkles')
+    expect(newGuy.body.phoneNumber).toBe('8008675309')
+    expect(newGuy.body.user_id).toBeDefined()
+
     const res = await supertest(server)
       .post('/api/auth/login')
       .send({
-        username:'abc123',
+        username:'sirTinkles',
         password:'abc123'
       })
       expect(res.status).toBe(200)
-      expect(res.type).toBe('application/json')   
+      expect(res.type).toBe('application/json')
+      // expect(res.token).toBeDefined()   
   })
 })
   
