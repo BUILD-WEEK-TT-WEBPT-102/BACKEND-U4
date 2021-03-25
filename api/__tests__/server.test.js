@@ -75,4 +75,15 @@ describe('server.js', () => {
     expect(res.body.phoneNumber).toBe('8008675309')
     expect(res.body.user_id).toBeDefined()
   })
+  it('can use the login endpoint', async()=>{
+    const res = await supertest(server)
+      .post('/api/auth/login')
+      .send({
+        username:'testman',
+        password:'abc123'
+      })
+      expect(res.status).toBe(200)
+      expect(res.type).toBe('application/json')
+      
+  })
 })
