@@ -1,9 +1,9 @@
 const express = require('express');
 const model = require('../users/usersModel');
 const router = express.Router();
-const {queryUsername} = require('../middleware/authMiddleware')
+const {queryUsername, checkUserContents} = require('../middleware/authMiddleware')
 
-router.post('/register', queryUsername(), async(req, res , next)=>{
+router.post('/register', checkUserContents(), queryUsername(), async(req, res , next)=>{
     try{
         //queryUsername: Username does not exist in database
         const data = await model.addResource(req.body)
