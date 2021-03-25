@@ -4,7 +4,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 //Routers
 const usersRouter = require('./users/usersRouter');
-
+const authRouter = require('./auth/authRouter')
 
 
 const server = express();
@@ -12,7 +12,8 @@ server.use(express.json());
 server.use(helmet());
 server.use(cors());
 
-server.use('/users',usersRouter)
+server.use('/api/auth', authRouter)
+server.use('/api/users', usersRouter)
 
 server.use('/', (req, res, next) => {
     res.status(200).json({
