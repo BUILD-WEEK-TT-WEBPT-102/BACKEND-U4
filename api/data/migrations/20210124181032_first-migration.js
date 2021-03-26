@@ -24,10 +24,14 @@ exports.up = async (knex) => {
 				.notNullable()
 				.references('species_id')
 				.inTable('species')
+				// .onDelete('SET_NULL')
+				// .onUpdate('SET_NULL')
 			plants.integer('user_id')
 				.notNullable()
 				.references('user_id')
 				.inTable('users')
+				.onDelete('CASCADE')
+				.onUpdate('CASCADE')
 		})
 
 
@@ -35,6 +39,6 @@ exports.up = async (knex) => {
 
 exports.down = async (knex) => {
 	await knex.schema.dropTableIfExists('plants')
-		.dropTableIfExists('species')
-		.dropTableIfExists('users')
+	await knex.schema.dropTableIfExists('species')
+	await knex.schema.dropTableIfExists('users')
 }

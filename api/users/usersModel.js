@@ -10,7 +10,7 @@ const findAll = async () =>{
     return data
 }
 const findByUsername = async (username) => {
-    console.log(username)
+    
     const data = await db ('users as u')
         .where('u.username', username)
         .select(

@@ -17,7 +17,7 @@ const checkRegisterContents = () => async(req, res, next) =>{
 const queryUsernameRegister = () => async ( req , res, next )=>{
     const verification = await model.findByUsername(req.body.username)
     if(verification){
-        console.log("broke")
+        
         return res.status(418).json({
             message:"Username taken: Unique value needed."
             })
@@ -56,12 +56,9 @@ const queryUsernameLogin = () => async(req,res,next)=> {
     const {username} = req.body
     const verification = await model.findByUsername(username)
 
-    // console.log('username', username)
-    // console.log('verification', verification)
-    // console.log('typeof', typeof verification)
 
     if(!verification){
-        console.log("broke")
+        
         return res.status(418).json({message:"user does not exist"})
     }
     req.password = verification.password;

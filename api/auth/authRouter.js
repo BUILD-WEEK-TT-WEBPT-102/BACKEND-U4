@@ -34,13 +34,6 @@ router.post('/register',
                 phoneNumber
             })
 
-            //remove after testing
-            const hashPassword1 = await bcrypt.hash('abc123', 10)
-            const hashPassword2 = await bcrypt.hash('123abc', 10)
-            console.log('hashPassword1', hashPassword1)
-            console.log('hashPassword2', hashPassword2)
-
-
             res.status(201).json(data)
         }catch(err){
             next(err)

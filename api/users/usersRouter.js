@@ -1,7 +1,7 @@
 const express = require('express');
 const model = require('./usersModel');
 const router = express.Router()
-const {containsUsername} = require('../middleware/usersMiddleware')
+
 
 //all routes are prefixed /users
 
