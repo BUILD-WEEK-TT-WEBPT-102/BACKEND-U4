@@ -20,7 +20,8 @@ router.get('/' , async(req, res, next)=>{
 //Returns plant by ID
 router.get('/:id' , async(req, res, next)=>{
     try{
-        
+        const data = await model.findByID(req.params.id)
+        res.status(200).json(data)
     }catch(err){
         next(err);
     }

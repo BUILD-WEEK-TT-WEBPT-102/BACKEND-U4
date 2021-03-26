@@ -36,7 +36,7 @@ You will receive a token back for authentication<br/>
 |    Edit     | PUT    | /api/users/:id     | {username,password,phoneNumber} |
 |     Del     | DELETE | /api/users/:id     | n/a                             |
 
-### items
+### Plants
 
 | User Action | METHOD | ROUTE           | SEND TO DB                                    |
 | :---------: | ------ | --------------- | --------------------------------------------- |
