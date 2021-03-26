@@ -1,13 +1,6 @@
-Current working endpoints
-
+Backend for Water My Plants - TT WEBPT 102 BW
 baseURL: https://backend-u4-ttwebpt102.herokuapp.com/api/
 
-current working routes
-:[<br/>
-/auth/register<br/>
-/users<br/>
-/users/:id<br/>
-]
 
 (/api/auth/register)<br/>
 Send a .post() to the endpoint with the following information.<br/>
