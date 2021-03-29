@@ -30,7 +30,8 @@ router.get('/:id' , async(req, res, next)=>{
 //Add a plant
 router.post('/' , async(req, res, next)=>{
     try{
-        
+        const data = await model.addResource(req.body)
+        res.status(201).json(data)
     }catch(err){
         next(err);
     }

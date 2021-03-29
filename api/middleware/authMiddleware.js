@@ -26,7 +26,7 @@ const queryUsernameRegister = () => async ( req , res, next )=>{
 }
 
 const checkContents = () => async(req, res, next) =>{
-    console.log("checkContents Started")
+    
     const { username , password } = req.body
     if(!username){
         return res.status(404).json({message:"Please provide a username"})
@@ -34,13 +34,13 @@ const checkContents = () => async(req, res, next) =>{
     if(!password){
         return res.status(404).json({message:"Please provide a password"})
     }
-    console.log("checkContents Ended")
+    
     
     next();
 }
 
 const checkTypeOf = () => (req, res, next) =>{
-    console.log("checkTypeOf Started")
+
     const { username , password } = req.body
     if(req.body.phoneNumber){
         if(typeof req.body.phoneNumber != 'string'){
@@ -53,11 +53,11 @@ const checkTypeOf = () => (req, res, next) =>{
     if(typeof password != 'string'){
         return res.status(400).json({message:"password is not a string"})
     }   
-    console.log("checkTypeOf Ended")
+    
     next();
 }
 const queryUsernameLogin = () => async(req,res,next)=> {
-    console.log("queryUsernameLogin Started")
+    
     const {username} = req.body
     const verification = await model.findByUsername(username)
 
@@ -67,7 +67,7 @@ const queryUsernameLogin = () => async(req,res,next)=> {
         return res.status(418).json({message:"user does not exist"})
     }
     req.password = verification.password;
-    console.log("queryUsernameLogin Ended")
+    
     next()
 }
 
