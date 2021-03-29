@@ -53,7 +53,7 @@ router.post('/login',
     queryUsernameLogin(), 
     async ( req , res , next )=>{
         try{
-            console.log("post Started")
+            
             const dbPass = req.password
             const bodyPass = req.body.password
             const passwordValidation = await bcrypt.compare(bodyPass, dbPass)
@@ -63,10 +63,11 @@ router.post('/login',
 
             const token = jwt.sign({
                 subject: req.username,
+                user_id:req.user_id,
                 expiresIn: '24h',
                 successfulLogin: true,   
             }, process.env.JWT_SECRET)
-            console.log("post ended")
+            
             res.cookie("token", token)
             res.status(200).json({
                 message:`Welcome ${req.body.username}`,

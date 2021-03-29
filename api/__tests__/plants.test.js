@@ -26,4 +26,28 @@ describe('tests the plant endpoint',()=>{
         expect(testRes.type).toBe('application/json')
         expect(testRes.body[0].nickname).toBe('Mandrake Root')
     })
+    it('can add a plant',async()=>{
+      const res = await supertest(server)
+        .post('/api/plants')
+        .send({
+			nickname:"Tre-ent",
+			water_frequency: "Hourly",
+			species_id: 2,
+			user_id: 2
+		})
+		expect(res.status).toBe(201);
+		expect(res.type).toBe('application/json')
+    })
+	it('can accept a string value for species', async() => {
+		const res = await supertest(server)
+        .post('/api/plants')
+        .send({
+			nickname:"Tre-ent",
+			water_frequency: "Hourly",
+			species_id: "New Value",
+			user_id: 2
+		})
+		expect(res.status).toBe(201);
+		expect(res.type).toBe('application/json')
+	})
 })

@@ -32,10 +32,18 @@ const findByID = async(id)=>{
     return data
 }
 
+const addResource = async(data)=>{
+    const newResource = await db('plants')
+        .insert(data)
+
+    return newResource
+    // return findByID(newResource)
+}
 
 module.exports = {
     findAll,
     findByID,
+    addResource,
 
 }
 
