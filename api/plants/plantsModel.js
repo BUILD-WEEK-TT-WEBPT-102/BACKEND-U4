@@ -27,29 +27,53 @@ const findByID = async(id)=>{
             "p.nickname",
             "p.water_frequency",
             "s.species_type as species",
-            "u.username as plantOwner"
+            "s.species_id",
+            "u.username",
+            "u.user_id"
             )
+        .first()
     return data
 }
 
-// const addResource = async(data)=>{
-//     const newResource = await db('plants')
-//         .insert({
-//             nickname: 
-//             water_frequency:
-//             species_type: 
-//             user_id:
-//                 })
+const addResource = async(data)=>{
+    const id = await db('plants')
+        .insert({
+            nickname: data.nickname,
+            water_frequency: data.water_frequency,
+            species_id: data.species_id,
+            user_id: data.user_id
+        }, "plant_id")
+        
+    return findByID(id[0])
+}
 
-//     return newResource
-//     // return findByID(newResource)
-// }
+const deleteResource = async(id)=>{
+    const deleteResource = await db('plants')
+        .where('plant_id', id)
+        .del()
+    return deleteResource
+}
+
+const updateResource = async(id, resource)=>{
+    const updateTarget = await findByID(id)
+    
+    const toUpdate = await db('plants')
+        .where('plant_id', id)
+        .update({
+            nickname: resource.nickname,
+            water_frequency: resource.water_frequency,
+            species_id: updateTarget.species_id,
+            user_id: updateTarget.user_id
+        }, 'plant_id')
+    return findByID(toUpdate[0])
+}
 
 module.exports = {
     findAll,
     findByID,
-    // addResource,
-
+    addResource,
+    deleteResource,
+    updateResource
 }
 
 //knex.from('plants').innerJoin('species', 'plants.id', 'species.user_id')

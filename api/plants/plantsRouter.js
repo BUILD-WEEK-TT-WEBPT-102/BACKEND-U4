@@ -1,11 +1,13 @@
 const express = require('express');
 const model = require('./plantsModel');
 const router = express.Router();
+const {
+    hasContents,
+    typeOf,
+    queryUserDB,
+    } = require('./plantsMiddleware')
 
 /* All routes prefixed with /api/plants */
-//[ ]
-
-
 
 // Returns all plants from the database
 router.get('/' , async(req, res, next)=>{
@@ -30,23 +32,35 @@ router.get('/:id' , async(req, res, next)=>{
 //Add a plant
 //middleware list:
 /*
-[]verify integrity of post object: {
-    
+hasContents: req.body contains [ nickname, water_frequency, species_type, user_id]  
+typeOf: req.body contains types: [string, string, int, int]
 }
 */
-router.post('/' , async(req, res, next)=>{
-    try{
-        const data = await model.addResource(req.body)
-        res.status(201).json(data)
-    }catch(err){
-        next(err);
-    }
+router.post('/', hasContents(), typeOf(), async(req, res, next)=>{
+        try{
+            console.log('middleware finished')
+            const dbReturn = await model.addResource(req.body)
+            res.status(201).json(dbReturn)
+        }catch(err){
+            next(err);
+        }
 })
 
 //Remove a plant by ID
 router.delete('/:id' , async(req, res, next)=>{
     try{
+        const dbReturn = await model.deleteResource(req.params.id)
+        res.status(204).json(dbReturn)
         
+    }catch(err){
+        next(err);
+    }
+})
+
+router.put('/:id', async(req,res, next)=>{
+    try{
+        const dbReturn = await model.updateResource(req.params.id , req.body)
+        res.status(204).json(dbReturn)
     }catch(err){
         next(err);
     }

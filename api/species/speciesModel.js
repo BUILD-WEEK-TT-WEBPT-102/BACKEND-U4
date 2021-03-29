@@ -26,7 +26,7 @@ const addResource = async (data) => {
         .insert({
             species_type: data
         })
-        
+    console.log(newResource)
     return newResource
 }
 
