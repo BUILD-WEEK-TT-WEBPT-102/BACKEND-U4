@@ -6,7 +6,7 @@ const findAll = async () =>{
             "u.user_id",
             "u.username",
             "u.phoneNumber",
-            "u.password"
+            
          )
     return data
 }
