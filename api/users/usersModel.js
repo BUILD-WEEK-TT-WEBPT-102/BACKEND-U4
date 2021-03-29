@@ -68,11 +68,41 @@ const updateResource = async(id, resource)=>{
     return postEdit
 }
 
+const findUserPlants = async(id) => {
+    const data = await db('users as u')
+        .innerJoin('plants as p' , 'p.user_id' , 'u.user_id' )
+        .innerJoin('species as s', 'p.species_id', 's.species_id')
+        .select("*")
+        .where('p.user_id', id)
+    
+    console.log('data', data)
+
+    const returnObj = {
+        user_id: data[0].user_id,
+        username: data[0].username,
+        phoneNumber: data[0].phoneNumber,
+        plantCollection: []
+    }
+    if(data){
+        returnObj.plantCollection = data.map(data=>{
+            return{
+                nickname: data.nickname,
+                water_frequency: data.water_frequency,
+                species_id: data.species_id,
+                species_type: data.species_type
+            }
+        })
+    }
+
+        return returnObj
+}
+
 module.exports = {
     findAll,
     findByUsername,
     findByID,
     addResource,
     removeResource,
-    updateResource
+    updateResource,
+    findUserPlants
 }
