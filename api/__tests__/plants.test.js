@@ -21,7 +21,7 @@ it('sanity check', () => {
 describe('tests the plant endpoint',()=>{
     it('returns a plant with properly joined tables', async()=>{
         const testRes = await supertest(server).get('/api/plants')
-        console.log(testRes.body)
+        
         expect(testRes.status).toBe(200)
         expect(testRes.type).toBe('application/json')
         expect(testRes.body[0].nickname).toBe('Mandrake Root')

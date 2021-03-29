@@ -5,6 +5,7 @@ const cors = require('cors');
 //Routers
 const usersRouter = require('./users/usersRouter');
 const authRouter = require('./auth/authRouter')
+const speciesRouter = require('./species/speciesRouter')
 const plantsRouter = require('./plants/plantsRouter')
 
 const server = express();
@@ -14,6 +15,7 @@ server.use(cors());
 
 server.use('/api/auth', authRouter)
 server.use('/api/users', usersRouter)
+server.use('/api/species', speciesRouter)
 server.use('/api/plants', plantsRouter)
 
 server.use('/', (req, res, next) => {

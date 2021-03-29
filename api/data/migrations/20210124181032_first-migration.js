@@ -12,7 +12,7 @@ exports.up = async (knex) => {
 	//species table with id & species
 		.createTable('species', (species)=>{
 			species.increments('species_id')
-			species.text('species_type')
+			species.text('species_type').unique()
 
 		})
 	//plant table with id, nickname, waterFrequency, FK species ID, FK userID
@@ -24,14 +24,14 @@ exports.up = async (knex) => {
 				.notNullable()
 				.references('species_id')
 				.inTable('species')
-				// .onDelete('SET_NULL')
-				// .onUpdate('SET_NULL')
+				.onDelete('CASCADE')
+				
 			plants.integer('user_id')
 				.notNullable()
 				.references('user_id')
 				.inTable('users')
 				.onDelete('CASCADE')
-				.onUpdate('CASCADE')
+				
 		})
 
 
