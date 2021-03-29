@@ -45,7 +45,7 @@ describe('users endpoint testing',()=>{
   })
   it('add new user & return new resource', async()=>{
     const res = await supertest(server)
-      .post('/api/users')
+      .post('/api/auth/register')
       .send({
         username: "machoMan",
         password: "abc123",
