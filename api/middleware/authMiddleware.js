@@ -39,12 +39,13 @@ const checkContents = () => async(req, res, next) =>{
     next();
 }
 
+/* Verify that each variable has a typeOf 'string' */
 const checkTypeOf = () => (req, res, next) =>{
 
     const { username , password } = req.body
     if(req.body.phoneNumber){
         if(typeof req.body.phoneNumber != 'string'){
-            return res.status(400).json({message: "username is not a string"})
+            return res.status(400).json({message: "phoneNumber is not a string"})
         }
     }
     if(typeof username != 'string'){
@@ -56,6 +57,7 @@ const checkTypeOf = () => (req, res, next) =>{
     
     next();
 }
+/* Check the database for a unique username entry ; save hash if user exists to 'req.hashPassword */
 const queryUsernameLogin = () => async(req,res,next)=> {
     
     const {username} = req.body
@@ -66,7 +68,8 @@ const queryUsernameLogin = () => async(req,res,next)=> {
         
         return res.status(418).json({message:"user does not exist"})
     }
-    req.password = verification.password;
+    req.hashPassword = verification.password;
+    req.hashUser = verification.user_id
     
     next()
 }

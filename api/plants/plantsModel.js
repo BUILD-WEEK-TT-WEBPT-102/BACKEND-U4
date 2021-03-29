@@ -32,18 +32,23 @@ const findByID = async(id)=>{
     return data
 }
 
-const addResource = async(data)=>{
-    const newResource = await db('plants')
-        .insert(data)
+// const addResource = async(data)=>{
+//     const newResource = await db('plants')
+//         .insert({
+//             nickname: 
+//             water_frequency:
+//             species_type: 
+//             user_id:
+//                 })
 
-    return newResource
-    // return findByID(newResource)
-}
+//     return newResource
+//     // return findByID(newResource)
+// }
 
 module.exports = {
     findAll,
     findByID,
-    addResource,
+    // addResource,
 
 }
 

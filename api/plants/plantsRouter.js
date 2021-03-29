@@ -28,6 +28,12 @@ router.get('/:id' , async(req, res, next)=>{
 })
 
 //Add a plant
+//middleware list:
+/*
+[]verify integrity of post object: {
+    
+}
+*/
 router.post('/' , async(req, res, next)=>{
     try{
         const data = await model.addResource(req.body)

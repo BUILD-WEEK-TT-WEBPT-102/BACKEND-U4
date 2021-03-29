@@ -17,7 +17,7 @@ const jwt = require('jsonwebtoken');
 /*
 [x] check that register has a username, password, phoneNumber in req.body
 [x] check that Register contents are type of 'string'
-[x] check that the username exists in the database, if it does save that password to req.password
+[x] check that the username exists in the database, if it does save that password to req.hashPassword
 
 */
 router.post('/register', 
@@ -44,7 +44,7 @@ router.post('/register',
 /*
 [x] check that login has a username and a password in req.body
 [x] check that login contents are type of 'string'
-[x] check that the username exists in the database, if it does save that password to req.password
+[x] check that the username exists in the database, if it does save that password to req.hashPassword
 
 */
 router.post('/login', 
@@ -54,7 +54,7 @@ router.post('/login',
     async ( req , res , next )=>{
         try{
             
-            const dbPass = req.password
+            const dbPass = req.hashPassword
             const bodyPass = req.body.password
             const passwordValidation = await bcrypt.compare(bodyPass, dbPass)
             if( passwordValidation === false ){
@@ -71,6 +71,7 @@ router.post('/login',
             res.cookie("token", token)
             res.status(200).json({
                 message:`Welcome ${req.body.username}`,
+                user_id: req.hashUser,
                 token: token
             })
 
