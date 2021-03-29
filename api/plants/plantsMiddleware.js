@@ -24,16 +24,16 @@ const typeOf = () => async(req,res,next) => {
     // console.log('typeof Species_type', typeof req.body.species_type)
     //checks the req.body for all required pieces
     if(typeof req.body.nickname != 'string'){
-        return res.status(404).json({message:"nickname needs to be a string"})
+        return res.status(409).json({message:"nickname needs to be a string"})
     }
     if(typeof req.body.water_frequency != "string"){
-        return res.status(404).json({message:"water_frequency needs to be a string"})
+        return res.status(409).json({message:"water_frequency needs to be a string"})
     }
     if(typeof req.body.species_id != "number"){
-        return res.status(404).json({message:"species_type currently needs to be a number"})
+        return res.status(409).json({message:"species_type currently needs to be a number"})
     }
     if(typeof req.body.user_id != "number"){
-        return res.status(404).json({message:"user_id needs to be a number"})
+        return res.status(409).json({message:"user_id needs to be a number"})
     }
     next();
 }

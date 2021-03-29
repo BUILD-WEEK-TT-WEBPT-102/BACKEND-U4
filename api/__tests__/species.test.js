@@ -32,7 +32,7 @@ describe( 'tests species endpoint' , () => {
 				species_type: "Flying Plants"
 			})
 		expect(res.status).toBe(204)
-		console.log(res.body)
+		
 	})
     it( 'can remove a species' , async() => {
 		const res = await supertest(server)

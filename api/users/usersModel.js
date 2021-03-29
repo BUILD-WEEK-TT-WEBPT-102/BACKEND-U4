@@ -57,10 +57,22 @@ const removeResource = async  (id) => {
     return deleteResource
 }
 
+const updateResource = async(id, resource)=>{  
+    const toUpdate = await db('users')
+        .where('user_id', id)
+        .update({
+            username: resource.username,
+            phoneNumber: resource.phoneNumber
+        }, 'user_id')
+    const postEdit = await findByID(toUpdate[0])
+    return postEdit
+}
+
 module.exports = {
     findAll,
     findByUsername,
     findByID,
     addResource,
-    removeResource
+    removeResource,
+    updateResource
 }

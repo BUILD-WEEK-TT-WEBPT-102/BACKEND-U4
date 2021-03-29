@@ -49,12 +49,11 @@ router.delete( '/:id' , async ( req, res, next ) => {
         next(err)
     }
 })
-//Edit values: password, phoneNumber
+//Edit user values: password, phoneNumber
 router.put( '/:id' , async ( req, res, next ) => {
     try{
-        console.log('put ran')
         const data = await model.updateResource(req.params.id , req.body)
-        res.status(204).json(data)
+        res.status(202).json(data)
     }catch(err){
         next(err)
     }

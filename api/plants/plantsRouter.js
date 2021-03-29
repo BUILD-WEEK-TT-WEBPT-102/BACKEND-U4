@@ -38,7 +38,7 @@ typeOf: req.body contains types: [string, string, int, int]
 */
 router.post('/', hasContents(), typeOf(), async(req, res, next)=>{
         try{
-            console.log('middleware finished')
+            
             const dbReturn = await model.addResource(req.body)
             res.status(201).json(dbReturn)
         }catch(err){
@@ -60,7 +60,7 @@ router.delete('/:id' , async(req, res, next)=>{
 router.put('/:id', async(req,res, next)=>{
     try{
         const dbReturn = await model.updateResource(req.params.id , req.body)
-        res.status(204).json(dbReturn)
+        res.status(202).json(dbReturn)
     }catch(err){
         next(err);
     }
