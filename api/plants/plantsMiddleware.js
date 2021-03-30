@@ -4,16 +4,16 @@ const db = require('../data/db-config')
 const hasContents = () => async(req,res,next) => {
     //checks the req.body for all required pieces
     if(!req.body.nickname){
-        return res.status(404).json({message:"nickname Missing :("})
+        return res.status(402).json({message:"nickname Missing :("})
     }
     if(!req.body.water_frequency){
-        return res.status(404).json({message:"water_frequency Missing :("})
+        return res.status(403).json({message:"water_frequency Missing :("})
     }
     if(!req.body.species_id){
-        return res.status(404).json({message:"species_id Missing :("})
+        return res.status(405).json({message:"species_id Missing :("})
     }
     if(!req.body.user_id){
-        return res.status(404).json({message:"user_id Missing :("})
+        return res.status(406).json({message:"user_id Missing :("})
     }
     next();
 }
