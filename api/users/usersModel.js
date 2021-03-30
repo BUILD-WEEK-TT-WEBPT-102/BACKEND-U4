@@ -1,4 +1,5 @@
 const db = require('../data/db-config');
+const bcrypt = require('bcryptjs')
 
 const findAll = async () =>{
     const data = await db ('users as u')
@@ -30,6 +31,7 @@ const findByID = async (id) =>{
             "u.user_id",
             "u.username",
             "u.phoneNumber",
+            "u.password"
         )
         .first()
     return data
@@ -47,7 +49,6 @@ const addResource = async  (data) => {
             password: data.password,
             phoneNumber: data.phoneNumber
         }, "user_id")
-    // return newPerson
     return findByID(newPerson[0])
 }
 const removeResource = async  (id) => {
@@ -58,12 +59,20 @@ const removeResource = async  (id) => {
 }
 
 const updateResource = async(id, resource)=>{  
+
+    //grab the old user
+    const oldResource = await findByID(id);
+
+    const newResource = {
+        username: (resource.username ? resource.username : oldResource.username),
+        phoneNumber: (resource.phoneNumber ? resource.phoneNumber : oldResource.phoneNumber),
+        password: (resource.password ? await bcrypt.hash(resource.password, 10): oldResource.password)
+    }
+
     const toUpdate = await db('users')
         .where('user_id', id)
-        .update({
-            username: resource.username,
-            phoneNumber: resource.phoneNumber
-        }, 'user_id')
+        .update(newResource, 'user_id')
+
     const postEdit = await findByID(toUpdate[0])
     return postEdit
 }
@@ -75,7 +84,7 @@ const findUserPlants = async(id) => {
         .select("*")
         .where('p.user_id', id)
     
-    console.log('data', data)
+    
 
     const returnObj = {
         user_id: data[0].user_id,

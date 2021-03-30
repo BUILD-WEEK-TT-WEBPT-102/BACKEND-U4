@@ -1,6 +1,7 @@
 const express = require('express');
 const model = require('./plantsModel');
 const router = express.Router();
+const restrict = require('../auth/authMiddleware')
 const {
     hasContents,
     typeOf,
@@ -10,7 +11,7 @@ const {
 /* All routes prefixed with /api/plants */
 
 // Returns all plants from the database
-router.get('/' , async(req, res, next)=>{
+router.get('/' ,  async(req, res, next)=>{
     try{
         const data = await model.findAll();
         res.status(200).json(data)

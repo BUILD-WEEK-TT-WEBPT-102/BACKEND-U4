@@ -1,6 +1,7 @@
 const server = require('../server')
 const db = require('../data/db-config')
 const supertest = require('supertest')
+const bcrypt = require('bcryptjs')
 
 beforeAll(async () => {
   await db.migrate.rollback()
@@ -59,9 +60,72 @@ describe('users endpoint testing',()=>{
   it('delete a user', async ()=>{
     const res = await supertest(server).delete('/api/users/1')
     expect(res.statusCode).toBe(204)
-    // const res2 = await supertest(server).get('/users/3')
-    // expect(res2.statusCode).toBe(404)
   })
+  it('can update a user (all keys)' , async() => {
+    
+    const res = await supertest(server)
+    .put('/api/users/1')
+    .send({
+      username:"editName",
+		  password:"editPassword",
+		  phoneNumber:"EDI-TNU-MBER"
+	  })
+
+    /* Check the contents of the result */
+	  expect(res.statusCode).toBe(202)
+	  expect(res.type).toBe('application/json')
+	  expect(res.body.username).toBe('editName')
+	  expect(res.body.phoneNumber).toBe('EDI-TNU-MBER')
+	  
+    /* Compare the password to the returned password hash */
+    const passwordValidation = await bcrypt.compare('editPassword', res.body.password)
+    expect(passwordValidation).toBeTruthy()
+    
+  })
+  it('can update a user (only username)' , async() => {
+    const res = await supertest(server)
+    .put('/api/users/1')
+    .send({
+      username:"editName",
+	  })
+    /* Check the contents of the result */
+	  expect(res.statusCode).toBe(202)
+	  expect(res.type).toBe('application/json')
+	  expect(res.body.username).toBe('editName')
+	  expect(res.body.phoneNumber).toBe('1234567890')
+    expect(res.body.password).toBe('$2a$10$c4pQE1UeQoCnqIsr6Ncsp.n8I8/G8GoJYcbF3mH7NleyDOm2.1cqK')
+  })
+  it('can update a user (only phoneNumber)' , async() => {
+    const res = await supertest(server)
+    .put('/api/users/1')
+    .send({
+      phoneNumber:"notNumber",
+	  })
+    /* Check the contents of the result */
+	  expect(res.statusCode).toBe(202)
+	  expect(res.type).toBe('application/json')
+	  expect(res.body.username).toBe('abcd1234')
+	  expect(res.body.phoneNumber).toBe('notNumber')
+    expect(res.body.password).toBe('$2a$10$c4pQE1UeQoCnqIsr6Ncsp.n8I8/G8GoJYcbF3mH7NleyDOm2.1cqK')
+  })
+  it('can update a user (only password)' , async() => {
+    const res = await supertest(server)
+    .put('/api/users/1')
+    .send({
+      password: 'editPassword',
+	  })
+    /* Check the contents of the result */
+	  expect(res.statusCode).toBe(202)
+	  expect(res.type).toBe('application/json')
+	  expect(res.body.username).toBe('abcd1234')
+	  expect(res.body.phoneNumber).toBe('1234567890')
+      /* Compare the password to the returned password hash */
+    const passwordValidation = await bcrypt.compare('editPassword', res.body.password)
+    expect(passwordValidation).toBeTruthy()
+  })
+	  
+    
+  
 })
   
 describe('auth endpoint', ()=>{

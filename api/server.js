@@ -2,6 +2,7 @@
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
+const cookieParser = require('cookie-parser')
 //Routers
 const usersRouter = require('./users/usersRouter');
 const authRouter = require('./auth/authRouter')
@@ -10,6 +11,7 @@ const plantsRouter = require('./plants/plantsRouter')
 
 const server = express();
 server.use(express.json());
+server.use(cookieParser())
 server.use(helmet());
 server.use(cors());
 

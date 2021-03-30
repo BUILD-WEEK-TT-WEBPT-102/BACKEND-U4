@@ -10,7 +10,7 @@ const hasContents = () => async(req,res,next) => {
         return res.status(404).json({message:"water_frequency Missing :("})
     }
     if(!req.body.species_id){
-        return res.status(404).json({message:"species_type Missing :("})
+        return res.status(404).json({message:"species_id Missing :("})
     }
     if(!req.body.user_id){
         return res.status(404).json({message:"user_id Missing :("})
@@ -20,8 +20,7 @@ const hasContents = () => async(req,res,next) => {
 
 //typeOf check on [nickname, water_frequency, species_type, user_id]
 const typeOf = () => async(req,res,next) => {
-    // console.log('typeOf, req.body: ',req.body)
-    // console.log('typeof Species_type', typeof req.body.species_type)
+    
     //checks the req.body for all required pieces
     if(typeof req.body.nickname != 'string'){
         return res.status(409).json({message:"nickname needs to be a string"})

@@ -31,7 +31,6 @@ describe('tests the plant endpoint',()=>{
         
         expect(testRes.status).toBe(200)
         expect(testRes.type).toBe('application/json')
-		console.log('result.body', testRes.body)
         expect(testRes.body.nickname).toBe('Mandrake Root')
 		expect(testRes.body.species).toBe('Conifers, cycads & Allies')
     })
@@ -189,7 +188,7 @@ describe('/plants error handling', () => {
 		expect(res.statusCode).toBe(409)
 		expect(res.type).toBe('application/json')
 	})
-	it(`404: typeof species_id`, async()=>{
+	it(`404: typeof user_id`, async()=>{
 		const res = await supertest(server)
 			.post('/api/plants')
 			.send({
