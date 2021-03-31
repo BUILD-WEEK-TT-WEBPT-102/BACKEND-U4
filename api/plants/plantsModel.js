@@ -1,4 +1,5 @@
 const db = require('../data/db-config')
+const speciesDB = require('../species/speciesModel')
 
 //find all plants
 const findAll = async()=>{
@@ -10,8 +11,10 @@ const findAll = async()=>{
             "p.plant_id",
             "p.nickname",
             "p.water_frequency",
-            "s.species_type as species",
-            "u.username as plantOwner"
+            "s.species_type",
+            "s.species_id",
+            "u.username as plantOwner",
+            "u.user_id"
             )
     return data
 }
@@ -43,7 +46,6 @@ const addResource = async(data)=>{
             species_id: data.species_id,
             user_id: data.user_id
         }, "plant_id")
-        
     return findByID(id[0])
 }
 

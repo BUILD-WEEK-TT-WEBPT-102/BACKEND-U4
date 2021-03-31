@@ -41,10 +41,14 @@ describe('tests the plant endpoint',()=>{
 				nickname:"Tre-ent",
 				water_frequency: "Hourly",
 				species_id: 2,
-				user_id: 2
+				user_id: 2,
+				species: "dangerous"
 			})
 		expect(res.status).toBe(201);
 		expect(res.type).toBe('application/json')
+
+		const res2 = await supertest(server).get('/api/plants/4')
+		expect(res2.body.nickname).toBe('Tre-ent')
     })
 	it('can edit a plant', async()=>{
 		const res = await supertest(server)

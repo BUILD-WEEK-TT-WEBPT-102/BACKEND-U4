@@ -3,7 +3,8 @@ const model = require('./plantsModel');
 const router = express.Router();
 const restrict = require('../auth/authMiddleware')
 const {
-    hasContents,
+    plantHasContents,
+    checkSpeciesDB,
     typeOf,
     queryUserDB,
     } = require('./plantsMiddleware')
@@ -37,11 +38,29 @@ hasContents: req.body contains [ nickname, water_frequency, species_type, user_i
 typeOf: req.body contains types: [string, string, int, int]
 }
 */
-router.post('/', hasContents(), typeOf(), async(req, res, next)=>{
+router.post('/', checkSpeciesDB(),plantHasContents(), typeOf(), async(req, res, next)=>{
         try{
-            
-            const dbReturn = await model.addResource(req.body)
-            res.status(201).json(dbReturn)
+            const {nickname, water_frequency, user_id} = req.body
+
+            const newPlant = {
+                nickname: nickname,
+                water_frequency: water_frequency,
+                user_id: user_id,
+                species_id: req.species_id
+            }
+
+        console.log('plant sent: ', newPlant)
+
+            const dbReturn = await model.addResource(newPlant)
+
+        console.log('dbReturn', dbReturn)
+            if(dbReturn){
+                console.log('if')
+                res.status(201).json(dbReturn)
+            }else{
+                console.log('else')
+                res.status(418).json({message:'so close'})
+            }
         }catch(err){
             next(err);
         }

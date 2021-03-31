@@ -25,8 +25,8 @@ const addResource = async (data) => {
     const newResource = await db('species')
         .insert({
             species_type: data
-        })
-    return newResource
+        },'species_id')
+    return findByID(newResource[0])
 }
 
 const deleteResource = async (id) => {

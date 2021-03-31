@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken')
 
 const restrict = () => async(req,res,next) => { 
     try{
-        console.log('cookie: ', req.cookies.token)
-        console.log('token: ', req.headers.token)
+   
 
         const token = (req.headers.token ? req.headers.token : req.cookies.token)
         if(!token){

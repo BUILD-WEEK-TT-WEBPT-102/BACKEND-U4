@@ -34,7 +34,7 @@ router.post('/',
             */
                 const species = req.speciesIdentifier
                 const data = await model.addResource(species)
-                res.status(204).json(data)
+                res.status(202).json(data)
             }catch(err){
                 next(err)
             }

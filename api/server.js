@@ -20,7 +20,7 @@ server.use('/api/users', usersRouter)
 server.use('/api/species', speciesRouter)
 server.use('/api/plants', plantsRouter)
 
-server.use('/', (req, res, next) => {
+server.get('/', (req, res, next) => {
     res.status(200).json({
         message:"Welcome to the API"
     })
