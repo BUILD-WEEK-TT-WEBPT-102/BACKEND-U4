@@ -40,9 +40,8 @@ describe('tests the plant endpoint',()=>{
 			.send({
 				nickname:"Tre-ent",
 				water_frequency: "Hourly",
-				species_id: 2,
+				species: 'dangerous',
 				user_id: 2,
-				species: "dangerous"
 			})
 		expect(res.status).toBe(201);
 		expect(res.type).toBe('application/json')
@@ -50,6 +49,19 @@ describe('tests the plant endpoint',()=>{
 		const res2 = await supertest(server).get('/api/plants/4')
 		expect(res2.body.nickname).toBe('Tre-ent')
     })
+	it('can add a plant with a custom species string (no species_id)', async() =>{
+		const res = await supertest(server)
+			.post('/api/plants')
+			.send({
+				nickname:"Tre-ent",
+				water_frequency: "Hourly",
+				user_id: 2,
+				species: "dangerous"
+			})
+			expect(res.status).toBe(201)
+			expect(res.type).toBe('application/json')
+
+	})
 	it('can edit a plant', async()=>{
 		const res = await supertest(server)
 			.put('/api/plants/1')
@@ -79,17 +91,16 @@ describe('/plants error handling', () => {
 		const res = await supertest(server)
 			.post('/api/plants')
 			.send({
-				"nickname":"Final Plant!!!!",
-				"water_frequency": "Once a week",
-				"species_id": 3,
-				"user_id": 1
+				nickname:"Final Plant!!!!",
+				water_frequency: "Once a week",
+				species:"testPlant",
+				user_id: 1
 			})
 		expect(res.statusCode).toBe(201)
 		expect(res.type).toBe('application/json')
 		expect(res.body.nickname).toBe("Final Plant!!!!")
 		expect(res.body.water_frequency).toBe("Once a week")
-		expect(res.body.species).toBe("Ferns & Fern Allies")
-		expect(res.body.species_id).toBe(3)
+		expect(res.body.species).toBe("testPlant")
 		expect(res.body.user_id).toBe(1)
 		expect(res.body.username).toBe("abcd1234")
 	})
@@ -97,10 +108,10 @@ describe('/plants error handling', () => {
 		const res = await supertest(server)
 			.post('/api/plants')
 			.send({
-				// "nickname":"TestPlant"
-				"water_frequency": "Once a week",
-				"species_id": 3,
-				"user_id": 1
+				// nickname:"Final Plant!!!!",
+				water_frequency: "Once a week",
+				species:"testPlant",
+				user_id: 1
 			})
 		expect(res.statusCode).toBe(404)
 		expect(res.type).toBe('application/json')
@@ -109,34 +120,34 @@ describe('/plants error handling', () => {
 		const res = await supertest(server)
 			.post('/api/plants')
 			.send({
-				"nickname": "TestPlant",
-				// "water_frequency": "Once a week",
-				"species_id": 3,
-				"user_id": 1
+				nickname:"Final Plant!!!!",
+				// water_frequency: "Once a week",
+				species:"testPlant",
+				user_id: 1
 			})
 		expect(res.statusCode).toBe(404)
 		expect(res.type).toBe('application/json')
 	})
-	it(`404: No species_id`, async()=>{
+	it(`404: No species`, async()=>{
 		const res = await supertest(server)
 			.post('/api/plants')
 			.send({
-				"nickname": "TestPlant",
-				"water_frequency": "Once a week",
-				// "species_id": 3,
-				"user_id": 1
+				nickname:"Final Plant!!!!",
+				water_frequency: "Once a week",
+				// species:"testPlant",
+				user_id: 1
 			})
-		expect(res.statusCode).toBe(404)
+		expect(res.statusCode).toBe(412)
 		expect(res.type).toBe('application/json')
 	})
 	it(`404: No user_id`, async()=>{
 		const res = await supertest(server)
 			.post('/api/plants')
 			.send({
-				"nickname": "TestPlant",
-				"water_frequency": "Once a week",
-				"species_id": 3,
-				// "user_id": 1
+				nickname:"Final Plant!!!!",
+				water_frequency: "Once a week",
+				species:"testPlant",
+				// user_id: 1
 			})
 		expect(res.statusCode).toBe(404)
 		expect(res.type).toBe('application/json')
@@ -145,10 +156,10 @@ describe('/plants error handling', () => {
 		const res = await supertest(server)
 			.post('/api/plants')
 			.send({
-				"nickname": "TestPlant",
-				"water_frequency": "Once a week",
-				"species_id": 3,
-				// "user_id": 1
+				nickname:"Final Plant!!!!",
+				water_frequency: "Once a week",
+				species:"testPlant",
+				// user_id: 1
 			})
 		expect(res.statusCode).toBe(404)
 		expect(res.type).toBe('application/json')
@@ -160,7 +171,7 @@ describe('/plants error handling', () => {
 				//nickname should be string
 				"nickname": 3,
 				"water_frequency": "Once a week",
-				"species_id": 3,
+				"species":"testPlant",
 				"user_id": 1
 			})
 		expect(res.statusCode).toBe(409)
@@ -173,7 +184,7 @@ describe('/plants error handling', () => {
 				"nickname": "TestPlant",
 				//water_frequency should be string
 				"water_frequency": 1,
-				"species_id": 3,
+				"species":"testPlant",
 				"user_id": 1
 			})
 		expect(res.statusCode).toBe(409)
@@ -186,10 +197,10 @@ describe('/plants error handling', () => {
 				"nickname": "TestPlant",
 				"water_frequency": "Once a week",
 				//species_id should be a number
-				"species_id": "3",
+				"species":undefined,
 				"user_id": 1
 			})
-		expect(res.statusCode).toBe(409)
+		expect(res.statusCode).toBe(412)
 		expect(res.type).toBe('application/json')
 	})
 	it(`404: typeof user_id`, async()=>{
@@ -202,7 +213,7 @@ describe('/plants error handling', () => {
 				//user_id should be a number
 				"user_id": "1"
 			})
-		expect(res.statusCode).toBe(409)
+		expect(res.statusCode).toBe(412)
 		expect(res.type).toBe('application/json')
 	})
 })

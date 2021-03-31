@@ -49,17 +49,17 @@ router.post('/', checkSpeciesDB(),plantHasContents(), typeOf(), async(req, res, 
                 species_id: req.species_id
             }
 
-        console.log('plant sent: ', newPlant)
+        
 
             const dbReturn = await model.addResource(newPlant)
 
-        console.log('dbReturn', dbReturn)
+        
             if(dbReturn){
-                console.log('if')
+                
                 res.status(201).json(dbReturn)
             }else{
-                console.log('else')
-                res.status(418).json({message:'so close'})
+              
+                res.status(417).json({message:'so close'})
             }
         }catch(err){
             next(err);

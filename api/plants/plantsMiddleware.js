@@ -5,16 +5,16 @@ const speciesModel = require('../species/speciesModel')
 const plantHasContents = () => async(req,res,next) => {
     //checks the req.body for all required pieces
     if(!req.body.nickname){
-        return res.status(403).json({message:"nickname Missing "})
+        return res.status(404).json({message:"nickname Missing "})
     }
     if(!req.body.water_frequency){
-        return res.status(403).json({message:"water_frequency Missing :("})
+        return res.status(404).json({message:"water_frequency Missing :("})
     }
     if(!req.species_id){
-        return res.status(403).json({message:"species_id Missing :("})
+        return res.status(404).json({message:"species_id Missing :("})
     }
     if(!req.body.user_id){
-        return res.status(403).json({message:"user_id Missing :("})
+        return res.status(404).json({message:"user_id Missing :("})
     }
     next();
 }
@@ -36,7 +36,7 @@ const checkSpeciesDB = () => async(req,res,next)=>{
             next()
         }
     }else{
-        return res.status(418).json({message:"Include species(and alert your sys admin)"})
+        return res.status(412).json({message:"Include species(and alert your sys admin)"})
     }
 }
 
@@ -50,7 +50,7 @@ const typeOf = () => async(req,res,next) => {
         species_id: (typeof req.specie_id),
         user_id: (typeof req.body.user_id)
     }
-    console.log('typeObject: ',typeObject)
+   
     //checks the req.body for all required pieces
     if(typeof req.body.nickname != 'string'){
         return res.status(409).json({message:"nickname needs to be a string"})
@@ -64,9 +64,7 @@ const typeOf = () => async(req,res,next) => {
     if(typeof req.body.user_id != "number"){
         return res.status(409).json({message:"user_id needs to be a number"})
     }
-    console.log('final middelware ran')
-    console.log('current req.body', req.body)
-    console.log('current req.species_id', req.species_id)
+    
     next();
 }
 //verify the user_id exists in the db (from req.body.user_id)const hasContents = () => async(req,res,next) {

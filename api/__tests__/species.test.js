@@ -31,7 +31,7 @@ describe( 'tests species endpoint' , () => {
 			.send({
 				species_type: "Flying Plants"
 			})
-		expect(res.status).toBe(204)
+		expect(res.status).toBe(202)
 		
 	})
     it( 'can remove a species' , async() => {

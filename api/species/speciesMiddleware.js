@@ -13,7 +13,7 @@ const querySpeciesDB = () => async(req,res,next) =>{
             //if duplicate found, return error
             if(typeof verification == 'object'){
                 
-               return res.status(418).json({message:"This species is already in the DB"})
+               return res.status(417).json({message:"This species is already in the DB"})
             //else, move forward and set the safe variable in the return.
             }else{
                 
@@ -31,7 +31,7 @@ const checkType = () => async(req,res,next)=>{
     const {species_type} = req.body
     //Check for string type
     if (typeof species_type != 'string'){
-        return res.status(418).json({message:"species_type needs to be a string"})
+        return res.status(416).json({message:"species_type needs to be a string"})
     }
     next();
 }
