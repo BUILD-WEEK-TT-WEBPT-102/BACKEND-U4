@@ -70,7 +70,15 @@ router.post('/', checkSpeciesDB(),plantHasContents(), typeOf(), nicknameUnique()
 router.delete('/:id' , async(req, res, next)=>{
     try{
         const dbReturn = await model.deleteResource(req.params.id)
-        res.status(202).json({message:"Resource Deletetd"})
+        if(dbReturn){
+            res.status(202).json({
+                message:"Resource Deletetd",
+                user_id: req.params.id
+            })
+        }else{
+            res.status(418).json({message: 'error deleting resource'})
+        }
+
         
     }catch(err){
         next(err);
