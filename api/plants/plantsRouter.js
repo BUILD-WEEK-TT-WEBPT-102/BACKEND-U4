@@ -6,7 +6,7 @@ const {
     plantHasContents,
     checkSpeciesDB,
     typeOf,
-    queryUserDB,
+    nicknameUnique,
     } = require('./plantsMiddleware')
 
 /* All routes prefixed with /api/plants */
@@ -38,7 +38,7 @@ hasContents: req.body contains [ nickname, water_frequency, species_type, user_i
 typeOf: req.body contains types: [string, string, int, int]
 }
 */
-router.post('/', checkSpeciesDB(),plantHasContents(), typeOf(), async(req, res, next)=>{
+router.post('/', checkSpeciesDB(),plantHasContents(), typeOf(), nicknameUnique(), async(req, res, next)=>{
         try{
             const {nickname, water_frequency, user_id} = req.body
 

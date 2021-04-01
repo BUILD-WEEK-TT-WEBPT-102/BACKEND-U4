@@ -7,9 +7,9 @@ const querySpeciesDB = () => async(req,res,next) =>{
     */    
     try{
         //Deconstruct input variable
-        const {species_type} = req.body
+        const {species} = req.body
         // Check the DB for duplicate values
-        const verification = await model.findByFilter(species_type)
+        const verification = await model.findByFilter(species)
             //if duplicate found, return error
             if(typeof verification == 'object'){
                 
@@ -17,7 +17,7 @@ const querySpeciesDB = () => async(req,res,next) =>{
             //else, move forward and set the safe variable in the return.
             }else{
                 
-                req.speciesIdentifier = req.body.species_type
+                req.speciesIdentifier = req.body.species
                 next();
             }
 
@@ -28,10 +28,10 @@ const querySpeciesDB = () => async(req,res,next) =>{
 
 const checkType = () => async(req,res,next)=>{
     //Deconstruct input variables
-    const {species_type} = req.body
+    const {species} = req.body
     //Check for string type
-    if (typeof species_type != 'string'){
-        return res.status(416).json({message:"species_type needs to be a string"})
+    if (typeof species != 'string'){
+        return res.status(416).json({message:"species needs to be a string"})
     }
     next();
 }
@@ -49,8 +49,21 @@ const validateID = () => async(req,res,next)=>{
     }
 }
 
+const speciesUnique = () => async(req,res,next)=>{
+    try{
+        const dataCheck = await model.findByFilter(req.body.species)
+        if(dataCheck){
+            return res.status(412).json({message:"Species already exists in the database"})
+        }
+        next();
+    }catch(err){
+        next(err)
+    }
+}
+
 module.exports = {
     querySpeciesDB,
+    speciesUnique,
     checkType,
     validateID
 }

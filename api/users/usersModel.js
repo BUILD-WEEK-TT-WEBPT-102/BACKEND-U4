@@ -84,7 +84,7 @@ const findUserPlants = async(id) => {
         .select("*")
         .where('p.user_id', id)
     
-    
+    console.log(data)
 
     const returnObj = {
         user_id: data[0].user_id,

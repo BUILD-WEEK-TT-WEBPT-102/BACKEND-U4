@@ -44,13 +44,17 @@ const checkSpeciesDB = () => async(req,res,next)=>{
 
 //typeOf check on [nickname, water_frequency, species_type, user_id]
 const typeOf = () => async(req,res,next) => {
+    /* Remove comments for identifying object
     const typeObject = {
         nickname: (typeof req.body.nickname),
         water_frequency: (typeof req.body.water_frequency),
-        species_id: (typeof req.specie_id),
+        species_id: (typeof req.species_id),
+        species_id: (typeof req.species),
         user_id: (typeof req.body.user_id)
     }
-   
+    console.log('types: ', typeObject)
+   */
+
     //checks the req.body for all required pieces
     if(typeof req.body.nickname != 'string'){
         return res.status(409).json({message:"nickname needs to be a string"})
@@ -68,17 +72,22 @@ const typeOf = () => async(req,res,next) => {
     next();
 }
 //verify the user_id exists in the db (from req.body.user_id)const hasContents = () => async(req,res,next) {
-const queryUserDB = () => async(req,res,next) => {
+const nicknameUnique = () => async(req,res,next) => {
     try{
-        
+        const dataCheck = await model.findByNickname(req.body.nickname)
+        if(dataCheck){
+            return res.status(412).json({message:"Nickname already exists"})
+        }
+        next();
     }catch(err){
         next(err)
     }
 }
 
+
 module.exports = {
     plantHasContents,
     checkSpeciesDB,
     typeOf,
-    queryUserDB,
+    nicknameUnique
 }

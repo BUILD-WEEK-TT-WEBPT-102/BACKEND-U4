@@ -62,14 +62,15 @@ const queryUsernameLogin = () => async(req,res,next)=> {
     
     const {username} = req.body
     const verification = await model.findByUsername(username)
-
+console.log(verification)
 
     if(!verification){
         
         return res.status(418).json({message:"user does not exist"})
     }
     req.hashPassword = verification.password;
-    req.hashUser = verification.user_id
+    req.user_id = verification.user_id
+    req.username
     
     next()
 }

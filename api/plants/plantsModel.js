@@ -38,6 +38,18 @@ const findByID = async(id)=>{
     return data
 }
 
+const findByNickname = async(nickname)=>{
+    const data = await db ('plants as p')
+        .where('p.nickname', nickname)
+        .select(
+            "p.plant_id",
+            "p.nickname",
+            "p.water_frequency"
+        )
+        .first()
+        return data
+}
+
 const addResource = async(data)=>{
     const id = await db('plants')
         .insert({
@@ -73,6 +85,7 @@ const updateResource = async(id, resource)=>{
 module.exports = {
     findAll,
     findByID,
+    findByNickname,
     addResource,
     deleteResource,
     updateResource

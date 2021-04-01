@@ -61,17 +61,20 @@ router.post('/login',
                 return res.status(401).json({message:'invalid credentials'})
             }
 
+            console.log(req.user_id)
+
             const token = jwt.sign({
-                subject: req.username,
-                user_id:req.user_id,
+                subject: req.body.username,
+                user_id: req.user_id,
                 expiresIn: '24h',
                 successfulLogin: true,   
             }, process.env.JWT_SECRET)
             
             res.cookie("token", token)
             res.status(200).json({
-                message:`Welcome ${req.body.username}`,
-                user_id: req.hashUser,
+                message:`Welcome to the server ${req.body.username}`,
+                user_id: req.user_id,
+                username: req.body.username,
                 token: token
             })
 

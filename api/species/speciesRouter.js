@@ -1,7 +1,7 @@
 const express = require('express');
 const model = require('./speciesModel');
 const router = express.Router();
-const {validateID, querySpeciesDB, checkType} = require('./speciesMiddleware')
+const {validateID, querySpeciesDB, checkType, speciesUnique} = require('./speciesMiddleware')
 
 router.get('/', async(req,res,next)=>{
     try{
@@ -26,12 +26,14 @@ router.get('/:id', validateID(), async(req,res,next)=>{
 router.post('/', 
     checkType(),
     querySpeciesDB(),
+    // speciesUnique(),
     async(req,res,next)=>{
         try{
             /*
             checkType: Verifies input [req.body.species_type] is a string
             querySpeciesDB: Returns req.speciesIdentifier to use as species_type
             */
+           console.log(req.speciesIdentifier)
                 const species = req.speciesIdentifier
                 const data = await model.addResource(species)
                 res.status(202).json(data)

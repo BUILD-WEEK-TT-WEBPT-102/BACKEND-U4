@@ -4,7 +4,7 @@ const restrict = () => async(req,res,next) => {
     try{
    
 
-        const token = (req.headers.token ? req.headers.token : req.cookies.token)
+        const token = (req.headers.Authorization ? req.headers.Authorization : req.cookies.token)
         if(!token){
             return res.status(401).json({message:'invalid credentials'})
         }
@@ -15,6 +15,7 @@ const restrict = () => async(req,res,next) => {
             }
             //valid jwt
             req.token = decoded
+            console.log(req.token)
             next();
         })
         

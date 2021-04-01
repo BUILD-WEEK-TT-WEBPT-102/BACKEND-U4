@@ -29,7 +29,7 @@ describe( 'tests species endpoint' , () => {
 		const res = await supertest(server)
 			.post('/api/species')
 			.send({
-				species_type: "Flying Plants"
+				species: "Flying Plants"
 			})
 		expect(res.status).toBe(202)
 		
