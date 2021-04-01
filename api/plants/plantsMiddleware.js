@@ -43,7 +43,8 @@ const checkSpeciesDB = () => async(req,res,next)=>{
 
 
 
-        }else{
+        }
+        if(req.body.species_type){
             const speciesCheck = await speciesModel.findByFilter(req.body.species_type)
 
             if(!speciesCheck){
@@ -117,7 +118,11 @@ const nicknameUnique = () => async(req,res,next) => {
         next(err)
     }
 }
-
+const forceSpeciesKeyName = () => async(req,res,next)=>{
+if(req.body.species_type){
+    req.body.species = req.body.species_type
+}
+}
 
 module.exports = {
     plantHasContents,
