@@ -11,7 +11,7 @@ const plantHasContents = () => async(req,res,next) => {
         return res.status(404).json({message:"water_frequency Missing :("})
     }
     if(!req.species_id){
-        return res.status(404).json({message:"species_id Missing :("})
+        return res.status(403).json({message:"species_id Missing :("})
     }
     if(!req.body.user_id){
         return res.status(404).json({message:"user_id Missing :("})
