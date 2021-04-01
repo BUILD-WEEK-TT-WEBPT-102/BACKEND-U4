@@ -21,9 +21,17 @@ const plantHasContents = () => async(req,res,next) => {
 
 const checkSpeciesDB = () => async(req,res,next)=>{   
     //if species has been sent to us in req.body 
-    if(req.body.species){
+
+    console.log('req species',req.body.species)
+    
+    if(req.body.species || req.body.species_type){
         //check to see if that species exists in the db
-        const speciesCheck = await speciesModel.findByFilter(req.body.species)
+        if(req.body.species){
+            const speciesCheck = await speciesModel.findByFilter(req.body.species)
+        }else{
+            const speciesCheck = await speciesModel.findByFilter(req.body.species_type)
+        }
+
 
         if(!speciesCheck){
             // if a resource is not found
