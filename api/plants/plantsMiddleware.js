@@ -28,21 +28,47 @@ const checkSpeciesDB = () => async(req,res,next)=>{
         //check to see if that species exists in the db
         if(req.body.species){
             const speciesCheck = await speciesModel.findByFilter(req.body.species)
+
+            if(!speciesCheck){
+                // if a resource is not found
+                const newSpecies = await speciesModel.addResource(req.body.species)
+                req.species_id = newSpecies.species_id    
+                next()
+            }else{
+                //if a resource IS found
+                req.species_id = speciesCheck.species_id
+                next()
+            }
+
+
+
+
         }else{
             const speciesCheck = await speciesModel.findByFilter(req.body.species_type)
+
+            if(!speciesCheck){
+                // if a resource is not found
+                const newSpecies = await speciesModel.addResource(req.body.species)
+                req.species_id = newSpecies.species_id    
+                next()
+            }else{
+                //if a resource IS found
+                req.species_id = speciesCheck.species_id
+                next()
+            }
         }
 
 
-        if(!speciesCheck){
-            // if a resource is not found
-            const newSpecies = await speciesModel.addResource(req.body.species)
-            req.species_id = newSpecies.species_id    
-            next()
-        }else{
-            //if a resource IS found
-            req.species_id = speciesCheck.species_id
-            next()
-        }
+        // if(!speciesCheck){
+        //     // if a resource is not found
+        //     const newSpecies = await speciesModel.addResource(req.body.species)
+        //     req.species_id = newSpecies.species_id    
+        //     next()
+        // }else{
+        //     //if a resource IS found
+        //     req.species_id = speciesCheck.species_id
+        //     next()
+        // }
     }else{
         return res.status(412).json({message:"Include species(and alert your sys admin)"})
     }
