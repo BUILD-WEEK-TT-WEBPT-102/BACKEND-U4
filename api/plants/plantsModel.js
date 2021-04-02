@@ -30,6 +30,7 @@ const findByID = async(id)=>{
             "p.plant_id",
             "p.nickname",
             "p.water_frequency",
+            "s.species_type as species",
             "s.species_type",
             "s.species_id",
             "u.username",
