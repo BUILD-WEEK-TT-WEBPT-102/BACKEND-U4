@@ -24,13 +24,11 @@ exports.up = async (knex) => {
 				.references('species_id')
 				.inTable('species')
 				.onDelete('CASCADE')
-				
 			plants.integer('user_id')
 				.notNullable()
 				.references('user_id')
 				.inTable('users')
 				.onDelete('CASCADE')
-				
 		})
 
 

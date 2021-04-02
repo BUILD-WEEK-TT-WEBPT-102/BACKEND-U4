@@ -33,7 +33,7 @@ router.post('/',
             checkType: Verifies input [req.body.species_type] is a string
             querySpeciesDB: Returns req.speciesIdentifier to use as species_type
             */
-           console.log(req.speciesIdentifier)
+           
                 const species = req.speciesIdentifier
                 const data = await model.addResource(species)
                 res.status(202).json(data)

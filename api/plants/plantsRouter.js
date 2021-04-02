@@ -7,6 +7,7 @@ const {
     checkSpeciesDB,
     typeOf,
     nicknameUnique,
+    allowSameNicknameOnEdit,
     } = require('./plantsMiddleware')
 
 /* All routes prefixed with /api/plants */
@@ -70,8 +71,8 @@ router.post('/', checkSpeciesDB(),plantHasContents(), typeOf(), nicknameUnique()
 router.delete('/:id' , async(req, res, next)=>{
     try{
         let dbReturn = await model.deleteResource(req.params.id)
-        console.log(dbReturn)
-        if(dbReturn = 1){
+        
+        if(dbReturn == 1){
             res.status(202).json({
                 message:"Resource Deleted",
                 plant_id: req.params.id
@@ -86,9 +87,15 @@ router.delete('/:id' , async(req, res, next)=>{
     }
 })
 
-router.put('/:id', async(req,res, next)=>{
+router.put('/:id',
+    checkSpeciesDB(),
+    plantHasContents(), 
+    typeOf(), 
+    
+    async(req,res, next)=>{
     try{
-        const dbReturn = await model.updateResource(req.params.id , req.body)
+        console.log(req.species_id)
+        const dbReturn = await model.updateResource(req.params.id , req.body, req.species_id)
         res.status(202).json(dbReturn)
     }catch(err){
         next(err);

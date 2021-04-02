@@ -14,7 +14,8 @@ const findAll = async()=>{
             "s.species_type",
             "s.species_id",
             "u.username as plantOwner",
-            "u.user_id"
+            "u.user_id",
+            "u.username"
             )
     return data
 }
@@ -29,7 +30,7 @@ const findByID = async(id)=>{
             "p.plant_id",
             "p.nickname",
             "p.water_frequency",
-            "s.species_type as species",
+            "s.species_type",
             "s.species_id",
             "u.username",
             "u.user_id"
@@ -68,16 +69,17 @@ const deleteResource = async(id)=>{
     return deleteResource
 }
 
-const updateResource = async(id, resource)=>{
+const updateResource = async(id, resource, speciesID)=>{
     const updateTarget = await findByID(id)
     
+   
     const toUpdate = await db('plants')
         .where('plant_id', id)
         .update({
             nickname: resource.nickname,
             water_frequency: resource.water_frequency,
-            species_id: updateTarget.species_id,
-            user_id: updateTarget.user_id
+            species_id: speciesID,
+            user_id: resource.user_id
         }, 'plant_id')
     return findByID(toUpdate[0])
 }

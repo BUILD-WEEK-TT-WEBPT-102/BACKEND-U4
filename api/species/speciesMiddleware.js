@@ -53,7 +53,7 @@ const speciesUnique = () => async(req,res,next)=>{
     try{
         const dataCheck = await model.findByFilter(req.body.species)
         if(dataCheck){
-            return res.status(412).json({message:"Species already exists in the database"})
+            return res.status(419).json({message:"Species already exists in the database"})
         }
         next();
     }catch(err){

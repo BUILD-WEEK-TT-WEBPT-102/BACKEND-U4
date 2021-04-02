@@ -22,22 +22,23 @@ it('sanity check', () => {
 
 describe('Endpoint Testing -- /API/Plants',()=>{
 	
-    it('returns plants joined with users and species', async()=>{
+    it('GET PLANTS : Returns plants array : joined with users and species', async()=>{
         const testRes = await supertest(server).get('/api/plants')
         expect(testRes.status).toBe(200)
         expect(testRes.type).toBe('application/json')
         expect(testRes.body[1].nickname).toBe('Gillyweed')
 		expect(testRes.body[1].species_type).toBe("Conifers, cycads & Allies")
 		expect(testRes.body[1].user_id).toBe(1)
+		expect(testRes.body[1].username).toBe('abcd1234')
     })
-	it('returns plants with properly joined tables', async()=>{
+	it('GET PLANT: Returns a single plant by ID: joined with users and species', async()=>{
         const testRes = await supertest(server).get('/api/plants/1')
         expect(testRes.status).toBe(200)
         expect(testRes.type).toBe('application/json')
         expect(testRes.body.nickname).toBe('Mandrake Root')
 		expect(testRes.body.species).toBe('Flowering Plants')
     })
-    it('can add a plant',async()=>{
+    it('POST Plant',async()=>{
       	const res = await supertest(server)
 			.post('/api/plants')
 			.send({
@@ -51,29 +52,37 @@ describe('Endpoint Testing -- /API/Plants',()=>{
 		const res2 = await supertest(server).get(`/api/plants/9`)
 		expect(res2.body.nickname).toBe('Tre-ent')
     })
-	it('can add a plant with a custom species string (no species_id)', async() =>{
+	it('POST plant w/ species_type', async() =>{
 		const res = await supertest(server)
 			.post('/api/plants')
 			.send({
 				nickname:"Tre-ent",
 				water_frequency: "Hourly",
 				user_id: 2,
-				species: "dangerous"
+				species_type: "dangerous"
 			})
+			
 			expect(res.status).toBe(201)
 			expect(res.type).toBe('application/json')
+			expect(res.body.nickname).toBe('Tre-ent')
+			expect(res.body.water_frequency).toBe("Hourly")
+			expect(res.body.user_id).toBe(2)
 	})
-	it('can edit a plant', async()=>{
+	it('PUT plant', async()=>{
 		const res = await supertest(server)
 			.put('/api/plants/1')
 			.send({
 			nickname: "FakePlant",
-			water_frequency: "Never - It's FAKE"
+			water_frequency: "Never - It's FAKE",
+			species: "killer whale",
+			user_id: 1
 			})
+			
 		expect(res.status).toBe(202)
 		expect(res.type).toBe('application/json')
 		expect(res.body.nickname).toBe('FakePlant')
 		expect(res.body.water_frequency).toBe("Never - It's FAKE")
+		expect(res.body.species).toBe('killer whale')
 	})
 })
 

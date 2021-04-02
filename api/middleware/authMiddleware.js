@@ -62,7 +62,7 @@ const queryUsernameLogin = () => async(req,res,next)=> {
     
     const {username} = req.body
     const verification = await model.findByUsername(username)
-console.log(verification)
+
 
     if(!verification){
         

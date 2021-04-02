@@ -15,7 +15,7 @@ const restrict = () => async(req,res,next) => {
             }
             //valid jwt
             req.token = decoded
-            console.log(req.token)
+            
             next();
         })
         
