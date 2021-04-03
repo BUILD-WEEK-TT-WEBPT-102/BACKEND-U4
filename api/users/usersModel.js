@@ -94,6 +94,7 @@ const findUserPlants = async(id) => {
     if(data){
         returnObj.plantCollection = data.map(data=>{
             return{
+                plant_id: data.plant_id,
                 nickname: data.nickname,
                 water_frequency: data.water_frequency,
                 species_id: data.species_id,
